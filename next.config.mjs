@@ -1,4 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        hostname: "daisyui.com",
+      },
+      {
+        hostname: "api.multiavatar.com",
+      },
+    ],
+  },
+};
 
 export default nextConfig;
