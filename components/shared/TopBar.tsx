@@ -2,9 +2,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useClerk } from "@clerk/nextjs";
 
 const TopBar = () => {
   const router = useRouter();
+  const { signOut } = useClerk();
   return (
     <div className="navbar fixed top-0 z-30 bg-base-200 shadow-sm">
       <div className="flex-1">
@@ -56,7 +58,9 @@ const TopBar = () => {
               <a>Settings</a>
             </li>
             <li>
-              <a>Logout</a>
+              <button onClick={() => signOut(() => router.push("/"))}>
+                Logout
+              </button>
             </li>
           </ul>
         </div>
