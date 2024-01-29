@@ -8,6 +8,9 @@ const nextConfig = {
       {
         hostname: "api.multiavatar.com",
       },
+      {
+        hostname: "img.clerk.com",
+      },
     ],
   },
 };

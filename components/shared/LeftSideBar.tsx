@@ -9,7 +9,7 @@ const LeftSideBar = () => {
   const pathname = usePathname();
   return (
     <div className="flex sticky left-0 top-0 z-20 h-screen max-md:hidden">
-      <div className="w-80 min-h-full bg-base-200 text-base-content p-4 pt-28">
+      <div className="w-fit min-h-full bg-base-200 text-base-content p-4 pt-28">
         {/* Sidebar content here */}
         <ul className="menu menu-lg">
           {sidebarLinks.map((item) => {
@@ -18,7 +18,13 @@ const LeftSideBar = () => {
               pathname === item.route;
             return (
               <li key={item.label} className="my-2">
-                <Link href={item.route} className={`${isActive && "active"}`}>
+                <Link
+                  href={item.route}
+                  className={`${
+                    isActive && "active"
+                  } max-lg:tooltip max-lg:tooltip-right`}
+                  data-tip={item.label}
+                >
                   <Image
                     src={item.imgURL}
                     height={24}
@@ -26,7 +32,7 @@ const LeftSideBar = () => {
                     alt={`${item.label}-icon`}
                     className={`${!isActive && "invert"}`}
                   />
-                  <span>{item.label}</span>
+                  <span className="max-lg:hidden">{item.label}</span>
                 </Link>
               </li>
             );

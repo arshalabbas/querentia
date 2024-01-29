@@ -2,11 +2,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useClerk } from "@clerk/nextjs";
+import { useClerk, useUser } from "@clerk/nextjs";
 
 const TopBar = () => {
   const router = useRouter();
   const { signOut } = useClerk();
+  const { isSignedIn, user } = useUser();
   return (
     <div className="navbar fixed top-0 z-30 bg-base-200 shadow-sm">
       <div className="flex-1">
@@ -41,13 +42,13 @@ const TopBar = () => {
                 width={40}
                 height={40}
                 alt="Tailwind CSS Navbar component"
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                src={user?.imageUrl || "https://api.multiavatar.com/random.png"}
               />
             </div>
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-md dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            className="menu menu-md max-sm:menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
               <Link href={"/profile"} className="justify-between">
