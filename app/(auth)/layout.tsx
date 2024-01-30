@@ -1,9 +1,16 @@
+import { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import "@/app/globals.css";
 
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "Querentia - Auth",
+  description:
+    "Connecting Hearts Sharing Solutions - Your space for well-being",
+};
 
 export default function RootLayout({
   children,
@@ -24,7 +31,11 @@ export default function RootLayout({
       }}
     >
       <html lang="en">
-        <body className={`${inter.className} bg-base-100`}>{children}</body>
+        <body
+          className={`${inter.className} bg-base-100 min-h-screen flex justify-center items-center`}
+        >
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   );

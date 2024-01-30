@@ -7,7 +7,7 @@ import { useClerk, useUser } from "@clerk/nextjs";
 const TopBar = () => {
   const router = useRouter();
   const { signOut } = useClerk();
-  const { isSignedIn, user } = useUser();
+  const { user } = useUser();
   return (
     <div className="navbar fixed top-0 z-30 bg-base-200 shadow-sm">
       <div className="flex-1">
@@ -16,7 +16,7 @@ const TopBar = () => {
           <Image
             src={"/logo.svg"}
             alt="logo"
-            width={100}
+            width={130}
             height={0}
             className="hidden md:block"
           />
