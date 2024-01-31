@@ -11,23 +11,57 @@ import {
   UserValidation,
   UserValidationType,
 } from "@/lib/validation/UserValidatoin";
+import { updateUser } from "@/lib/actions/user.actions";
+import { usePathname, useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
-const AccountProfile = () => {
+interface Props {
+  user: {
+    id: string;
+    objectId: string;
+    name: string;
+    username: string;
+    bio: string;
+    avatar?: string;
+  };
+  btnTitle: string;
+}
+
+const AccountProfile = ({ user, btnTitle }: Props) => {
+  const currentUser = useUser();
   const [randomAvatar, setRandomAvatar] = useState(
-    multiAvatarUrl(Math.random())
+    user.avatar && user.avatar !== ""
+      ? user.avatar
+      : multiAvatarUrl(Math.random())
   );
+  const pathname = usePathname();
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm<UserValidationType>({
     resolver: zodResolver(UserValidation),
+    defaultValues: {
+      name: user.name,
+      username: user.username,
+      bio: user.bio,
+    },
   });
 
-  const onSubmit = (data: UserValidationType) => {
-    console.log(data);
-    reset();
+  const onSubmit = async (values: UserValidationType) => {
+    await updateUser({
+      name: values.name,
+      username: values.username,
+      path: pathname,
+      userId: user.id,
+      bio: values.bio || "",
+      avatar: randomAvatar,
+    }).then(async () => {
+      await currentUser.user?.reload();
+      router.push("/");
+    });
   };
 
   return (
@@ -37,8 +71,10 @@ const AccountProfile = () => {
     >
       <div className="w-full flex items-center gap-4">
         <div
-          onClick={() => setRandomAvatar(multiAvatarUrl(Math.random()))}
-          className="w-[100px] h-[100px] rounded-full hover:scale-95 transition bg-base-300"
+          onClick={() => {
+            setRandomAvatar(multiAvatarUrl(Math.random()));
+          }}
+          className="max-w-[100px] max-h-[100px] rounded-full hover:scale-95 transition bg-base-300"
         >
           <Image
             src={randomAvatar}
@@ -81,7 +117,7 @@ const AccountProfile = () => {
             isSubmitting && "btn-disabled"
           }`}
         >
-          Continue
+          {btnTitle}
         </button>
       </div>
     </form>

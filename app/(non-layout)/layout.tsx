@@ -2,6 +2,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 import "@/app/globals.css";
 import { Metadata } from "next";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +18,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  if (auth().sessionClaims?.metadata.onboardingComplete == true) {
+    redirect("/");
+  }
   return (
     <ClerkProvider>
       <html lang="en">
