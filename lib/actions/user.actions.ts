@@ -60,3 +60,14 @@ export async function fetchUser(userId: string) {
     throw new Error(`Error fetching user: ${error.message}`);
   }
 }
+
+export async function removeUser(userId: string) {
+  try {
+    connectToDB();
+
+    await User.deleteOne({ id: userId });
+    await clerkClient.users.deleteUser(userId);
+  } catch (error: any) {
+    throw new Error(`Error removing user: ${error.message}`);
+  }
+}

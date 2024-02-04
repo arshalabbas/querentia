@@ -1,6 +1,8 @@
 import AccountProfile from "@/components/forms/AccountProfile";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 const Page = async () => {
   const user = await currentUser();
@@ -14,6 +16,9 @@ const Page = async () => {
     bio: userInfo?.bio || "",
     avatar: userInfo?.avatar || "",
   };
+  if (auth().sessionClaims?.metadata.onboardingComplete == true) {
+    redirect("/");
+  }
   return (
     <main className="mx-auto flex max-w-3xl flex-col justify-start px-10 max-sm:px-0 py-20">
       <h1 className="text-head max-sm:text-center">Hold a sec!</h1>
