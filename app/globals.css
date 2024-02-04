@@ -20,6 +20,9 @@
       .text-subtl {
         @apply text-lg text-primary;
       }
+      .text-sub-head {
+        @apply font-semibold text-xl;
+      }
   }
 
   @layer utilities {

@@ -60,7 +60,8 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       avatar: randomAvatar,
     }).then(async () => {
       await currentUser.user?.reload();
-      router.push("/");
+      if (pathname === "/profile/edit") router.back();
+      else router.push("/");
     });
   };
 

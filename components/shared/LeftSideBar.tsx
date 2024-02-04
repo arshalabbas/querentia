@@ -1,12 +1,14 @@
 "use client";
 
 import { sidebarLinks } from "@/constants";
+import { useAuth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LeftSideBar = () => {
   const pathname = usePathname();
+  const { userId } = useAuth();
   return (
     <div className="flex sticky left-0 top-0 z-20 h-screen max-md:hidden">
       <div className="w-fit min-h-full bg-base-200 text-base-content p-4 pt-28">
@@ -16,6 +18,8 @@ const LeftSideBar = () => {
             const isActive =
               (pathname.includes(item.route) && item.route.length > 1) ||
               pathname === item.route;
+            if (item.route === "/profile")
+              item.route = `${item.route}/${userId}`;
             return (
               <li key={item.label} className="my-2">
                 <Link
