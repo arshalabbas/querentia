@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   UserValidation,
   UserValidationType,
-} from "@/lib/validation/UserValidatoin";
+} from "@/lib/validation/UserValidation";
 import { updateUser } from "@/lib/actions/user.actions";
 import { usePathname, useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";

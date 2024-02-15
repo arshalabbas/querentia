@@ -21,7 +21,7 @@ const Page = async () => {
       <h1 className="text-head max-sm:text-center">Edit Profile</h1>
       <p className="mt-3 text-subtl max-sm:text-center">Make any changes!</p>
       <section className="mt-12">
-        <AccountProfile user={userData} btnTitle="Continue" />
+        <AccountProfile user={userData} btnTitle="Save" />
       </section>
     </>
   );

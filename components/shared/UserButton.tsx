@@ -37,7 +37,7 @@ const UserButton = async () => {
           className="menu menu-md max-sm:menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
         >
           <li>
-            <Link href={`/profile/${user.id}`} className="justify-between">
+            <Link href={`/profile/${userInfo.id}`} className="justify-between">
               Profile
             </Link>
           </li>

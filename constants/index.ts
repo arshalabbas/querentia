@@ -21,7 +21,7 @@ export const sidebarLinks = [
   },
   {
     imgURL: "/assets/create.svg",
-    route: "/create",
+    route: "/new",
     label: "New Post",
   },
 ];
