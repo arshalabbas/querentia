@@ -8,7 +8,7 @@ const Page = async () => {
   return (
     <div>
       <h1 className="text-head">Home</h1>
-      <section className="flex flex-col gap-3 py-5">
+      <section className="flex flex-col gap-8 py-5">
         {result.questions.length === 0 ? (
           <p className="text-secondary-content text-center text-3xl mt-10 font-extrabold">
             No Posts Yet

@@ -83,6 +83,7 @@ export async function fetchQuestionById(questionId: string) {
       })
       .populate({
         path: "answers",
+        options: { sort: { createdAt: "desc" } },
         populate: [
           {
             path: "author",
@@ -117,6 +118,7 @@ export async function addAnswerToQuestion(
       title: text,
       author: userId,
       parentId: questionId,
+      createdAt: new Date(),
     });
 
     const savedAnswerQuestion = await answerQuestion.save();
@@ -128,5 +130,124 @@ export async function addAnswerToQuestion(
     revalidatePath(path);
   } catch (error: any) {
     throw new Error(`Error adding comment: ${error.message}`);
+  }
+}
+
+export async function upVote(questionId: string, userId: string) {
+  try {
+    const questionObjectId = new mongoose.Types.ObjectId(questionId);
+    const user = await User.findOne({ id: userId });
+
+    const question = await Question.findById(questionObjectId);
+    const hasUpVoted = question.vote.upvote.includes(user._id);
+
+    const hasDownVoted = question.vote.downvote.includes(user._id);
+
+    if (hasUpVoted) {
+      await Question.findByIdAndUpdate(
+        questionObjectId,
+        {
+          $pull: {
+            "vote.upvote": user._id,
+          },
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    } else if (hasDownVoted) {
+      await Question.findByIdAndUpdate(
+        questionObjectId,
+        {
+          $pull: {
+            "vote.downvote": user._id,
+          },
+          $addToSet: {
+            "vote.upvote": user._id,
+          },
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    } else {
+      await Question.findByIdAndUpdate(
+        questionObjectId,
+        {
+          $addToSet: {
+            "vote.upvote": user._id,
+          },
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    }
+  } catch (error: any) {
+    throw new Error(
+      `Error when up voting the question/answer: ${error.message}`
+    );
+  }
+}
+
+export async function downVote(questionId: string, userId: string) {
+  try {
+    const questionObjectId = new mongoose.Types.ObjectId(questionId);
+    const user = await User.findOne({ id: userId });
+
+    const question = await Question.findById(questionObjectId);
+    const hasDownVoted = question.vote.downvote.includes(user._id);
+    const hasUpVoted = question.vote.upvote.includes(user._id);
+
+    if (hasDownVoted) {
+      await Question.findByIdAndUpdate(
+        questionObjectId,
+        {
+          $pull: {
+            "vote.downvote": user._id,
+          },
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    } else if (hasUpVoted) {
+      await Question.findByIdAndUpdate(
+        questionObjectId,
+        {
+          $pull: {
+            "vote.upvote": user._id,
+          },
+          $addToSet: {
+            "vote.downvote": user._id,
+          },
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    } else {
+      await Question.findByIdAndUpdate(
+        questionObjectId,
+        {
+          $addToSet: {
+            "vote.downvote": user._id,
+          },
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    }
+  } catch (error: any) {
+    throw new Error(
+      `Error when down voting the question/answer: ${error.message}`
+    );
   }
 }

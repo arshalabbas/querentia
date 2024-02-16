@@ -1,9 +1,8 @@
-import { currentUser } from "@clerk/nextjs";
+"use client";
+import { downVote, upVote } from "@/lib/actions/question.actions";
 import Image from "next/image";
-import Link from "next/link";
 
 interface Props {
-  questionId: string;
   title: string;
   description?: string;
   author: {
@@ -11,23 +10,31 @@ interface Props {
     id: string;
     avatar: string;
   };
+  userId: string;
+  questionId: string;
 }
 
-const QuestionActionCard = async ({
-  questionId,
+const QuestionActionCard = ({
   title,
   description,
   author,
+  userId,
+  questionId,
 }: Props) => {
-  const user = await currentUser();
-  if (!user) return null;
-  let sameUser = user.id === author.id;
+  let sameUser = userId === author.id;
+
+  const handleUpvote = async () => {
+    await upVote(questionId, userId);
+  };
+  const handleDownVote = async () => {
+    await downVote(questionId, userId);
+  };
   return (
     <div className="card bg-base-200">
       <div className="flex p-4 justify-between">
         <div className="flex flex-col gap-2 items-center">
           <div className="flex mr-1">
-            <button className="btn btn-ghost btn-circle">
+            <button className="btn btn-ghost btn-circle" onClick={handleUpvote}>
               <Image
                 src="/assets/upvote.svg"
                 alt="upvote_icon"
@@ -37,10 +44,13 @@ const QuestionActionCard = async ({
             </button>
           </div>
           <div className="flex mr-1">
-            <p>0</p>
+            <p>0</p> {/* TODO: need to fetch from the server */}
           </div>
           <div className="flex mr-1">
-            <button className="btn btn-ghost btn-circle">
+            <button
+              className="btn btn-ghost btn-circle"
+              onClick={handleDownVote}
+            >
               <Image
                 src="/assets/downvote.svg"
                 alt="share_icon"

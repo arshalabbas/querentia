@@ -31,7 +31,7 @@ const QuestionForm = ({ userId }: { userId: string }) => {
       description: values.description || "",
       userId,
       path: pathname,
-    }).then(() => router.push("/home"));
+    }).then(() => router.push("/"));
   };
   return (
     <form
