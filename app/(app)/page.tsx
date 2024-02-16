@@ -15,16 +15,21 @@ const Page = async () => {
           </p>
         ) : (
           <>
-            {result.questions.map((question) => (
-              <QuestionCard
-                key={question._id}
-                title={question.title}
-                description={question.description}
-                author={question.author}
-                questionId={question._id}
-                answersLength={question.answers.length}
-              />
-            ))}
+            {result.questions.map((question) => {
+              const voteLength =
+                question.vote.upvote.length - question.vote.downvote.length;
+              return (
+                <QuestionCard
+                  key={question._id}
+                  title={question.title}
+                  description={question.description}
+                  author={question.author}
+                  questionId={question._id}
+                  answersLength={question.answers.length}
+                  voteLength={voteLength}
+                />
+              );
+            })}
           </>
         )}
       </section>

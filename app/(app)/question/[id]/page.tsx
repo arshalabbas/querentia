@@ -16,6 +16,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
     id: question.author.id,
     avatar: question.author.avatar,
   };
+  const questionVoteLength =
+    question.vote.upvote.length - question.vote.downvote.length;
   return (
     <section>
       <QuestionActionCard
@@ -24,6 +26,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         author={authorData}
         userId={user.id}
         questionId={question._id.toString()}
+        voteLength={questionVoteLength}
       />
       <AnswerForm
         userAvatar={userInfo.avatar}
@@ -42,6 +45,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
               id: answer.author.id,
               avatar: answer.author.avatar,
             };
+            const answerVoteLength =
+              answer.vote.upvote.length - answer.vote.downvote.length;
             return (
               <QuestionActionCard
                 key={JSON.stringify(answer._id)}
@@ -49,6 +54,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                 author={answerAuthorData}
                 userId={user.id}
                 questionId={answer._id.toString()}
+                voteLength={answerVoteLength}
               />
             );
           })}

@@ -12,6 +12,7 @@ interface Props {
   };
   userId: string;
   questionId: string;
+  voteLength: number;
 }
 
 const QuestionActionCard = ({
@@ -20,6 +21,7 @@ const QuestionActionCard = ({
   author,
   userId,
   questionId,
+  voteLength,
 }: Props) => {
   let sameUser = userId === author.id;
 
@@ -44,7 +46,7 @@ const QuestionActionCard = ({
             </button>
           </div>
           <div className="flex mr-1">
-            <p>0</p> {/* TODO: need to fetch from the server */}
+            <p>{voteLength}</p>
           </div>
           <div className="flex mr-1">
             <button
