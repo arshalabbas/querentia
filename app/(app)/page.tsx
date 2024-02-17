@@ -1,9 +1,7 @@
 import QuestionCard from "@/components/ui/QuestionCard";
 import { fetchQuestions } from "@/lib/actions/question.actions";
-import { currentUser } from "@clerk/nextjs";
 
 const Page = async () => {
-  // const user = await currentUser();
   const result = await fetchQuestions(1, 30);
   return (
     <div>

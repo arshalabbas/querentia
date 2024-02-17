@@ -42,7 +42,7 @@ const AnswerForm = ({ questionId, userAvatar, userId }: Props) => {
       onSubmit={handleSubmit(onSubmit)}
       className="mt-3 flex gap-5 py-8 items-center justify-between"
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center w-full gap-3">
         <div className="rounded-full overflow-hidden">
           <Image
             className="rounded-full"
@@ -55,7 +55,7 @@ const AnswerForm = ({ questionId, userAvatar, userId }: Props) => {
         <input
           type="text"
           placeholder="Answer it..."
-          className="input w-96 max-w-xs flex-1"
+          className="input w-full mr-10"
           {...register("text")}
         />
       </div>

@@ -133,7 +133,11 @@ export async function addAnswerToQuestion(
   }
 }
 
-export async function upVote(questionId: string, userId: string) {
+export async function upVote(
+  questionId: string,
+  userId: string,
+  pathname: string
+) {
   try {
     const questionObjectId = new mongoose.Types.ObjectId(questionId);
     const user = await User.findOne({ id: userId });
@@ -186,6 +190,7 @@ export async function upVote(questionId: string, userId: string) {
         }
       );
     }
+    revalidatePath(pathname);
   } catch (error: any) {
     throw new Error(
       `Error when up voting the question/answer: ${error.message}`
@@ -193,7 +198,11 @@ export async function upVote(questionId: string, userId: string) {
   }
 }
 
-export async function downVote(questionId: string, userId: string) {
+export async function downVote(
+  questionId: string,
+  userId: string,
+  pathname: string
+) {
   try {
     const questionObjectId = new mongoose.Types.ObjectId(questionId);
     const user = await User.findOne({ id: userId });
@@ -245,9 +254,35 @@ export async function downVote(questionId: string, userId: string) {
         }
       );
     }
+
+    revalidatePath(pathname);
   } catch (error: any) {
     throw new Error(
       `Error when down voting the question/answer: ${error.message}`
+    );
+  }
+}
+
+export async function fetchUserVoteOnPost(
+  questionId: string,
+  userId: string,
+  pathname: string
+) {
+  try {
+    connectToDB();
+
+    const questionObjectId = new mongoose.Types.ObjectId(questionId);
+    const question = await Question.findById(questionObjectId);
+    const user = await User.findOne({ id: userId });
+
+    const hasUpVoted = question.vote.upvote.includes(user._id);
+    const hasDownVoted = question.vote.downvote.includes(user._id);
+
+    revalidatePath(pathname);
+    return { upvote: hasUpVoted, downvote: hasDownVoted };
+  } catch (error: any) {
+    throw new Error(
+      `Error on fetching the vote details of the user: ${error.message}`
     );
   }
 }

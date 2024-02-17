@@ -1,6 +1,7 @@
 "use client";
 import { downVote, upVote } from "@/lib/actions/question.actions";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 interface Props {
   title: string;
@@ -13,6 +14,10 @@ interface Props {
   userId: string;
   questionId: string;
   voteLength: number;
+  userVoted?: {
+    upvote: boolean;
+    downvote: boolean;
+  };
 }
 
 const QuestionActionCard = ({
@@ -22,21 +27,28 @@ const QuestionActionCard = ({
   userId,
   questionId,
   voteLength,
+  userVoted,
 }: Props) => {
+  const pathname = usePathname();
   let sameUser = userId === author.id;
 
   const handleUpvote = async () => {
-    await upVote(questionId, userId);
+    await upVote(questionId, userId, pathname);
   };
   const handleDownVote = async () => {
-    await downVote(questionId, userId);
+    await downVote(questionId, userId, pathname);
   };
   return (
     <div className="card bg-base-200">
       <div className="flex p-4 justify-between">
         <div className="flex flex-col gap-2 items-center">
           <div className="flex mr-1">
-            <button className="btn btn-ghost btn-circle" onClick={handleUpvote}>
+            <button
+              className={`btn btn-circle ${
+                userVoted?.upvote ? "btn-success" : "btn-ghost"
+              }`}
+              onClick={handleUpvote}
+            >
               <Image
                 src="/assets/upvote.svg"
                 alt="upvote_icon"
@@ -50,7 +62,9 @@ const QuestionActionCard = ({
           </div>
           <div className="flex mr-1">
             <button
-              className="btn btn-ghost btn-circle"
+              className={`btn btn-circle ${
+                userVoted?.downvote ? "btn-error" : "btn-ghost"
+              }`}
               onClick={handleDownVote}
             >
               <Image

@@ -1,11 +1,17 @@
 import AnswerForm from "@/components/forms/AnswerForm";
 import QuestionActionCard from "@/components/ui/QuestionActionCard";
 // import QuestionCard from "@/components/ui/QuestionCard";
-import { fetchQuestionById } from "@/lib/actions/question.actions";
+import {
+  fetchQuestionById,
+  fetchUserVoteOnPost,
+} from "@/lib/actions/question.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
+import { headers } from "next/headers";
 
 const Page = async ({ params }: { params: { id: string } }) => {
+  const headersList = headers();
+  const pathname = headersList.get("x-invoke-path") || "";
   if (!params.id) return null;
   const user = await currentUser();
   if (!user) return null;
@@ -18,6 +24,12 @@ const Page = async ({ params }: { params: { id: string } }) => {
   };
   const questionVoteLength =
     question.vote.upvote.length - question.vote.downvote.length;
+
+  const userVoted = await fetchUserVoteOnPost(
+    question._id.toString(),
+    userInfo.id,
+    pathname
+  );
   return (
     <section>
       <QuestionActionCard
@@ -27,6 +39,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         userId={user.id}
         questionId={question._id.toString()}
         voteLength={questionVoteLength}
+        userVoted={userVoted}
       />
       <AnswerForm
         userAvatar={userInfo.avatar}
@@ -39,7 +52,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         <p className="text-2xl text-gray-300 text-center">No Answers Yet</p>
       ) : (
         <div className="my-3 flex flex-col gap-5">
-          {question.answers.map((answer: any) => {
+          {question.answers.map(async (answer: any) => {
             const answerAuthorData = {
               username: answer.author.username,
               id: answer.author.id,
@@ -47,6 +60,11 @@ const Page = async ({ params }: { params: { id: string } }) => {
             };
             const answerVoteLength =
               answer.vote.upvote.length - answer.vote.downvote.length;
+            const userVotedOnTheUser = await fetchUserVoteOnPost(
+              answer._id.toString(),
+              answer.author.id,
+              pathname
+            );
             return (
               <QuestionActionCard
                 key={JSON.stringify(answer._id)}
@@ -55,6 +73,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                 userId={user.id}
                 questionId={answer._id.toString()}
                 voteLength={answerVoteLength}
+                userVoted={userVotedOnTheUser}
               />
             );
           })}
