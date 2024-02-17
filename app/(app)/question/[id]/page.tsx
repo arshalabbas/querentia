@@ -30,6 +30,32 @@ const Page = async ({ params }: { params: { id: string } }) => {
     userInfo.id,
     pathname
   );
+
+  const answersWithAuthorData = await Promise.all(
+    question.answers.map(async (answer: any) => {
+      const answerAuthorData = {
+        username: answer.author.username,
+        id: answer.author.id,
+        avatar: answer.author.avatar,
+      };
+      const answerVoteLength =
+        answer.vote.upvote.length - answer.vote.downvote.length;
+      const userVotedOnTheUser = await fetchUserVoteOnPost(
+        answer._id.toString(),
+        answer.author.id,
+        pathname
+      );
+      return {
+        id: answer._id.toString(),
+        title: answer.title,
+        author: answerAuthorData,
+        userId: user.id,
+        questionId: answer._id.toString(),
+        voteLength: answerVoteLength,
+        userVoted: userVotedOnTheUser,
+      };
+    })
+  );
   return (
     <section>
       <QuestionActionCard
@@ -52,31 +78,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
         <p className="text-2xl text-gray-300 text-center">No Answers Yet</p>
       ) : (
         <div className="my-3 flex flex-col gap-5">
-          {question.answers.map(async (answer: any) => {
-            const answerAuthorData = {
-              username: answer.author.username,
-              id: answer.author.id,
-              avatar: answer.author.avatar,
-            };
-            const answerVoteLength =
-              answer.vote.upvote.length - answer.vote.downvote.length;
-            const userVotedOnTheUser = await fetchUserVoteOnPost(
-              answer._id.toString(),
-              answer.author.id,
-              pathname
-            );
-            return (
-              <QuestionActionCard
-                key={JSON.stringify(answer._id)}
-                title={answer.title}
-                author={answerAuthorData}
-                userId={user.id}
-                questionId={answer._id.toString()}
-                voteLength={answerVoteLength}
-                userVoted={userVotedOnTheUser}
-              />
-            );
-          })}
+          {answersWithAuthorData.map((answerData: any) => (
+            <QuestionActionCard key={answerData.id} {...answerData} />
+          ))}
         </div>
       )}
     </section>
