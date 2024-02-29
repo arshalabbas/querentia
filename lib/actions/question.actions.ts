@@ -286,3 +286,14 @@ export async function fetchUserVoteOnPost(
     );
   }
 }
+
+export async function deleteQuestionById(questionId: string, pathname: string) {
+  try {
+    connectToDB();
+
+    await Question.deleteOne({ _id: new mongoose.Types.ObjectId(questionId) });
+    revalidatePath(pathname);
+  } catch (error: any) {
+    throw new Error(`Error deleting the question: ${error.message}`);
+  }
+}

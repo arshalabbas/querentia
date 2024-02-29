@@ -3,6 +3,9 @@ import { useAuth } from "@clerk/nextjs";
 
 import { removeUser } from "@/lib/actions/user.actions";
 import { useRouter } from "next/navigation";
+import AlertModal, {
+  alertButtonOnClickHandler,
+} from "@/components/ui/AlertModal";
 
 function Page() {
   const router = useRouter();
@@ -21,28 +24,17 @@ function Page() {
         <h1 className="text-sub-head mb-3">Danger</h1>
         <button
           className="btn btn-error"
-          onClick={() =>
-            (
-              document.getElementById("delete-alert") as HTMLDialogElement
-            )?.showModal()
-          }
+          onClick={() => alertButtonOnClickHandler("delete-alert")}
         >
           Delete Account
         </button>
-        <dialog id="delete-alert" className="modal">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg">Account Deleteion</h3>
-            <p className="py-4">Are you sure about this decision?</p>
-            <div className="modal-action">
-              <form method="dialog">
-                <button className="btn btn-ghost">Cancel</button>
-              </form>
-              <button onClick={deleteHandler} className="btn btn-error">
-                Delete
-              </button>
-            </div>
-          </div>
-        </dialog>
+        <AlertModal
+          id="delete-alert"
+          title="Account Deletetion"
+          body="Are you sure about this decision?"
+          buttonTitle="Delete"
+          successHandler={deleteHandler}
+        />
       </section>
     </main>
   );

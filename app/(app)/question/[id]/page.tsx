@@ -40,7 +40,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
       };
       const answerVoteLength =
         answer.vote.upvote.length - answer.vote.downvote.length;
-      const userVotedOnTheUser = await fetchUserVoteOnPost(
+      const userVotedOnTheAnswer = await fetchUserVoteOnPost(
         answer._id.toString(),
         answer.author.id,
         pathname
@@ -49,10 +49,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
         id: answer._id.toString(),
         title: answer.title,
         author: answerAuthorData,
-        userId: user.id,
+        userId: userInfo.id,
         questionId: answer._id.toString(),
         voteLength: answerVoteLength,
-        userVoted: userVotedOnTheUser,
+        userVoted: userVotedOnTheAnswer,
       };
     })
   );

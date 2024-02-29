@@ -1,7 +1,12 @@
 "use client";
-import { downVote, upVote } from "@/lib/actions/question.actions";
+import {
+  deleteQuestionById,
+  downVote,
+  upVote,
+} from "@/lib/actions/question.actions";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import AlertModal, { alertButtonOnClickHandler } from "./AlertModal";
 
 interface Props {
   title: string;
@@ -38,6 +43,10 @@ const QuestionActionCard = ({
   const handleDownVote = async () => {
     await downVote(questionId, userId, pathname);
   };
+
+  const deleteQuestionHandler = async () => {
+    await deleteQuestionById(questionId, pathname);
+  };
   return (
     <div className="card bg-base-200">
       <div className="flex p-4 justify-between">
@@ -54,6 +63,7 @@ const QuestionActionCard = ({
                 alt="upvote_icon"
                 width={32}
                 height={32}
+                className={`${userVoted?.upvote && "invert brightness-200"}`}
               />
             </button>
           </div>
@@ -72,6 +82,7 @@ const QuestionActionCard = ({
                 alt="share_icon"
                 width={32}
                 height={32}
+                className={`${userVoted?.downvote && "invert brightness-200"}`}
               />
             </button>
           </div>
@@ -109,7 +120,26 @@ const QuestionActionCard = ({
               tabIndex={0}
               className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
-              <li className="btn btn-error">
+              <AlertModal
+                id="delete-alert"
+                title="Do you really want to delete your question?"
+                buttonTitle="Delete"
+                successHandler={deleteQuestionHandler}
+              />
+              <AlertModal
+                id="report-alert"
+                title="Report this question"
+                buttonTitle="Report"
+                successHandler={deleteQuestionHandler}
+              />
+              <li
+                className="btn btn-error"
+                onClick={
+                  sameUser
+                    ? () => alertButtonOnClickHandler("delete-alert")
+                    : () => alertButtonOnClickHandler("report-alert")
+                }
+              >
                 {sameUser ? "Delete" : "Report"}
               </li>
             </ul>
