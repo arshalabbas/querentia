@@ -48,7 +48,7 @@ const QuestionForm = ({ userId }: { userId: string }) => {
         disabled={isSubmitting}
         className="btn btn-info btn-wide mt-3"
       >
-        Post
+        Post Question
       </button>
     </form>
   );

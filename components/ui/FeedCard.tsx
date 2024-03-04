@@ -1,23 +1,19 @@
 "use client";
-import {
-  deleteQuestionById,
-  downVote,
-  upVote,
-} from "@/lib/actions/question.actions";
+
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import AlertModal, { alertButtonOnClickHandler } from "./AlertModal";
+import { downVote, upVote } from "@/lib/actions/feed.actions";
+import { usePathname } from "next/navigation";
 
 interface Props {
   title: string;
-  description?: string;
+  description: string;
   author: {
     username: string;
-    id: string;
     avatar: string;
   };
   userId: string;
-  questionId: string;
+  feedId: string;
   voteLength: number;
   userVoted?: {
     upvote: boolean;
@@ -25,28 +21,24 @@ interface Props {
   };
 }
 
-const QuestionActionCard = ({
+const FeedCard = ({
   title,
   description,
   author,
   userId,
-  questionId,
-  voteLength,
+  feedId,
   userVoted,
+  voteLength,
 }: Props) => {
   const pathname = usePathname();
-  let sameUser = userId === author.id;
-
   const handleUpvote = async () => {
-    await upVote(questionId, userId, pathname);
+    await upVote(feedId, userId, pathname);
   };
   const handleDownVote = async () => {
-    await downVote(questionId, userId, pathname);
+    await downVote(feedId, userId, pathname);
   };
-
-  const deleteQuestionHandler = async () => {
-    await deleteQuestionById(questionId, pathname);
-  };
+  const deleteQuestionHandler = () => {};
+  const sameUser = false;
   return (
     <div className="card bg-base-200">
       <div className="flex p-4 justify-between">
@@ -121,13 +113,13 @@ const QuestionActionCard = ({
               className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
               <AlertModal
-                id={"delete-alert" + questionId}
+                id="delete-alert"
                 title="Do you really want to delete your question?"
                 buttonTitle="Delete"
                 successHandler={deleteQuestionHandler}
               />
               <AlertModal
-                id={"report-alert" + questionId}
+                id="report-alert"
                 title="Report this question"
                 buttonTitle="Report"
                 successHandler={deleteQuestionHandler}
@@ -136,10 +128,8 @@ const QuestionActionCard = ({
                 className="btn btn-error"
                 onClick={
                   sameUser
-                    ? () =>
-                        alertButtonOnClickHandler("delete-alert" + questionId)
-                    : () =>
-                        alertButtonOnClickHandler("report-alert" + questionId)
+                    ? () => alertButtonOnClickHandler("delete-alert")
+                    : () => alertButtonOnClickHandler("report-alert")
                 }
               >
                 {sameUser ? "Delete" : "Report"}
@@ -152,4 +142,4 @@ const QuestionActionCard = ({
   );
 };
 
-export default QuestionActionCard;
+export default FeedCard;

@@ -50,7 +50,7 @@ const Page = async () => {
           role="tabpanel"
           className="tab-content bg-base-100 border-base-300 rounded-box p-6"
         >
-          <FeedForm />
+          <FeedForm userId={user.id} />
         </div>
       </div>
     </div>

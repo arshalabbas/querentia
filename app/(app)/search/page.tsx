@@ -25,13 +25,13 @@ async function Page() {
 
       {/* Searchbar */}
 
-      <div className="mt-14 flex gap-9">
+      <div className="mt-14 grid grid-flow-rows grid-cols-2 lg:grid-cols-3 max-sm:grid-cols-1 gap-9">
         {result.users.length === 0 ? (
           <p className="no-result">No users!</p>
         ) : (
           <>
             {result.users.map((person) => (
-              <div className="card w-96 max-xs:flex-col bg-base-100 shadow-md">
+              <div className="card max-xs:flex-col bg-base-100 shadow-md">
                 <div className="card-body">
                   <Image
                     src={person.avatar}

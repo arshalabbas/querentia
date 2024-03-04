@@ -1,17 +1,14 @@
 import mongoose from "mongoose";
 
-const questionSchema = new mongoose.Schema({
+const feedSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
   },
-  description: String,
-  answers: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Question",
-    },
-  ],
+  description: {
+    type: String,
+    required: true,
+  },
   vote: {
     upvote: [
       {
@@ -34,13 +31,8 @@ const questionSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  parentId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Question",
-  },
 });
 
-const Question =
-  mongoose.models.Question || mongoose.model("Question", questionSchema);
+const Feed = mongoose.models.Feed || mongoose.model("Feed", feedSchema);
 
-export default Question;
+export default Feed;
