@@ -21,9 +21,9 @@ const Page = async () => {
   const feedsWithAuthorData = await Promise.all(
     result.feeds.map(async (feed: any) => {
       const feedAuthorData = {
-        username: userInfo.username,
+        username: feed.author.username,
         id: feed.author.id,
-        avatar: userInfo.avatar,
+        avatar: feed.author.avatar,
       };
 
       const feedVoteLength =
