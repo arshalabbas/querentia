@@ -16,8 +16,10 @@ const PollForm = () => {
   } = useForm<pollValidationType>({
     resolver: zodResolver(pollValidation),
   });
+
+  const onSubmit = () => {};
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <PostHeader
         errors={errors}
         placeholder="Poll Title"
