@@ -17,7 +17,10 @@ const PollForm = () => {
     resolver: zodResolver(pollValidation),
   });
 
-  const onSubmit = () => {};
+  const onSubmit = (values: pollValidationType) => {
+    console.log("what's happening");
+    console.log(values);
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <PostHeader
@@ -25,7 +28,7 @@ const PollForm = () => {
         placeholder="Poll Title"
         register={register}
       />
-      <PollOptions />
+      <PollOptions register={register} />
       <button
         type="submit"
         className="btn btn-info btn-wide mt-3"

@@ -20,6 +20,7 @@ export const TextInput = ({
       </div>
       <input
         type="text"
+        autoComplete="off"
         placeholder={placeholder || "Type here..."}
         className={`input input-bordered w-full ${
           errorMessage && "input-error"

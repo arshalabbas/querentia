@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import Image from "next/image";
 
-const PollOptions = () => {
+const PollOptions = ({ register }: { register: any }) => {
   const [options, setOptions] = useState([
     {
       id: 0,
@@ -36,14 +36,6 @@ const PollOptions = () => {
     );
   };
 
-  const onchangeHandle = (id: number, value: string) => {
-    const updatedOptions = options.map((option) =>
-      option.id === id ? { ...option, title: value } : option
-    );
-
-    setOptions(updatedOptions);
-  };
-
   return (
     <div>
       <p className="text-lg my-2">Options</p>
@@ -55,8 +47,8 @@ const PollOptions = () => {
                 type="text"
                 placeholder={`Option ${option.id + 1}`}
                 className="input input-bordered w-full max-w-xs"
-                value={option.title}
-                onChange={(e) => onchangeHandle(option.id, e.target.value)}
+                name={"option-" + option.id}
+                {...register("option-" + option.id)}
               />
               <button
                 className={`btn btn-circle ${
@@ -87,9 +79,9 @@ const PollOptions = () => {
             >
               <path
                 d="M4 12H20M12 4V20"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
             Add

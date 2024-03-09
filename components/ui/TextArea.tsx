@@ -22,6 +22,7 @@ export const TextArea = ({
       </div>
       <textarea
         name={name}
+        autoComplete="off"
         className="textarea textarea-bordered h-32 w-full"
         placeholder={placeholder || "Type here..."}
         defaultValue={defaultContent || ""}
