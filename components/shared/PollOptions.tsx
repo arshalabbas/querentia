@@ -45,6 +45,7 @@ const PollOptions = ({ register }: { register: any }) => {
             <div className="flex gap-5 items-center" key={option.id}>
               <input
                 type="text"
+                autoComplete="off"
                 placeholder={`Option ${option.id + 1}`}
                 className="input input-bordered w-full max-w-xs"
                 name={"option-" + option.id}

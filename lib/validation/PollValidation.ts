@@ -16,7 +16,7 @@ const pollValidation = z.object({
     .max(1000, { message: "Maximum 1000 characters" })
     .optional(),
   // options: z.array(optionsValidation),
-  "option-0": z.string().optional(),
+  "option-0": z.string(),
   "option-1": z.string().optional(),
   "option-2": z.string().optional(),
   "option-3": z.string().optional(),

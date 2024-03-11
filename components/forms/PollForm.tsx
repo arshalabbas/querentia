@@ -7,6 +7,7 @@ import pollValidation, {
 import { zodResolver } from "@hookform/resolvers/zod";
 import PostHeader from "../shared/PostHeader";
 import PollOptions from "../shared/PollOptions";
+import { postPoll } from "@/lib/actions/poll.actions";
 
 const PollForm = () => {
   const {
@@ -17,9 +18,8 @@ const PollForm = () => {
     resolver: zodResolver(pollValidation),
   });
 
-  const onSubmit = (values: pollValidationType) => {
-    console.log("what's happening");
-    console.log(values);
+  const onSubmit = async (values: pollValidationType) => {
+    // TODO: will figure it out 
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
