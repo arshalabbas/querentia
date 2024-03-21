@@ -16,7 +16,7 @@ const Page = async () => {
         {activity.length > 0 ? (
           <>
             {activity.map((activity) => (
-              <Link key={activity._id} href={`/thread/${activity.parentId}`}>
+              <Link key={activity._id} href={`/question/${activity.parentId}`}>
                 <article className="card py-7 bg-base-300">
                   <div className="flex gap-4 items-center">
                     <Image

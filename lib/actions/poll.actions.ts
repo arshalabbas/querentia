@@ -264,22 +264,6 @@ export async function votePollOption({
     option.votes.push(user._id);
     poll.save();
     revalidatePath(pathname);
-    // const hasVoted = poll.options.some((option: any) =>
-    //   option.votes.includes(userId)
-    // );
-    // if (hasVoted) return;
-
-    // const option = poll.options.id(optionId);
-    // console.log(option);
-
-    // const alreadyVotedForOption = option.votes.includes(userId);
-    // if (alreadyVotedForOption) return;
-
-    // option.votes.push(userId);
-
-    // await poll.save();
-
-    // revalidatePath(pathname);
   } catch (error) {
     console.error("Error voting for option:", error);
     return "An error occurred while voting for the option.";

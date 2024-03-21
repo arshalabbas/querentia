@@ -305,3 +305,23 @@ export async function deleteQuestionById(questionId: string, pathname: string) {
     throw new Error(`Error deleting the question: ${error.message}`);
   }
 }
+
+export async function fetchFilterecQuestions(searchQuery: string) {
+  try {
+    connectToDB();
+
+    const mongooseQuery = Question.find({
+      parentId: { $in: [null, undefined] },
+      $or: [
+        { title: { $regex: searchQuery, $options: "i" } },
+        { description: { $regex: searchQuery, $options: "i" } },
+      ],
+    });
+    // mongooseQuery.sort({ createdAt: "desc" });
+
+    const data = mongooseQuery.exec();
+    return data;
+  } catch (error: any) {
+    throw new Error(`Error searching: ${error.message}`);
+  }
+}

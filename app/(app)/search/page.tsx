@@ -1,54 +1,44 @@
-import { fetchUser, fetchUsers } from "@/lib/actions/user.actions";
-import { currentUser } from "@clerk/nextjs";
-import Image from "next/image";
-import { redirect } from "next/navigation";
+import QuestionCard from "@/components/ui/QuestionCard";
+import SearchBar from "@/components/ui/SearchBar";
+import { fetchFilterecQuestions } from "@/lib/actions/question.actions";
 
-async function Page() {
-  const user = await currentUser();
-  if (!user) return null;
+async function Page({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+  };
+}) {
+  const query = searchParams?.query || "";
 
-  const userInfo = await fetchUser(user.id);
-
-  if (!userInfo?.onboarded) redirect("/onboarding");
-
-  // fetch users
-  const result = await fetchUsers({
-    userId: user.id,
-    searchString: "",
-    pageNumber: 1,
-    pageSize: 25,
-  });
+  const result = await fetchFilterecQuestions(query);
 
   return (
     <section>
       <h1 className="text-head mb-10">Search</h1>
 
-      {/* Searchbar */}
+      <SearchBar />
 
-      <div className="mt-14 grid grid-flow-rows grid-cols-2 lg:grid-cols-3 max-sm:grid-cols-1 gap-9">
-        {result.users.length === 0 ? (
-          <p className="no-result">No users!</p>
+      <div className="mt-14 flex flex-col gap-5">
+        {result.length < 0 ? (
+          <p className="no-result"></p>
         ) : (
           <>
-            {result.users.map((person) => (
-              <div className="card max-xs:flex-col bg-base-100 shadow-md">
-                <div className="card-body">
-                  <Image
-                    src={person.avatar}
-                    width={60}
-                    height={60}
-                    alt="user-avatar"
-                  />
-                  <div>
-                    <h2 className="card-title">{person.name}</h2>
-                    <p>@{person.username}</p>
-                  </div>
-                  <div className="card-actions justify-end">
-                    <button className="btn btn-primary">View</button>
-                  </div>
-                </div>
-              </div>
-            ))}
+            {result.map((question) => {
+              const voteLength =
+                question.vote.upvote.length - question.vote.downvote.length;
+              return (
+                <QuestionCard
+                  key={question._id}
+                  title={question.title}
+                  description={question.description}
+                  author={question.author}
+                  questionId={question._id}
+                  answersLength={question.answers.length}
+                  voteLength={voteLength}
+                />
+              );
+            })}
           </>
         )}
       </div>

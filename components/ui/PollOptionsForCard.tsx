@@ -17,7 +17,6 @@ interface Props {
 const PollOptionsForCard = ({ pollId, options, pathname }: Props) => {
   const { userId } = useAuth();
   const handleVote = async (option: { id: number; title: string }) => {
-    console.log(option);
     await votePollOption({
       pollId,
       optionId: option.id,
