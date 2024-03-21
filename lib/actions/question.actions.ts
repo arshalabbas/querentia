@@ -71,6 +71,14 @@ export async function fetchQuestions(pageNumber = 1, pageSize = 20) {
   }
 }
 
+export async function searchQuestions() {
+  try {
+    connectToDB();
+  } catch (error: any) {
+    throw new Error(`Error searching questions: ${error.message}`);
+  }
+}
+
 export async function fetchQuestionById(questionId: string) {
   try {
     connectToDB();

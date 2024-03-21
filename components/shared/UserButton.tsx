@@ -8,7 +8,7 @@ const UserButton = async () => {
   const userInfo = await fetchUser(user?.id);
   return (
     <div className="flex-none">
-      <div className="mx-4 flex gap-1">
+      {/* <div className="mx-4 flex gap-1">
         <Image
           src={"/assets/coins.svg"}
           width={16}
@@ -16,7 +16,7 @@ const UserButton = async () => {
           alt="coins_icon"
         />
         <p className="font-bold text-lg">{userInfo?.points}</p>
-      </div>
+      </div> */}
       <div className="dropdown dropdown-end">
         <div
           tabIndex={0}

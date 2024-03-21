@@ -1,27 +1,27 @@
 import mongoose from "mongoose";
 
-const PollSchema = new mongoose.Schema({
+const pollSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
   },
-  descriptioin: String,
+  description: String,
   vote: {
     upvote: [
       {
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
     ],
     downvote: [
       {
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
     ],
   },
   author: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
   options: [
@@ -30,7 +30,7 @@ const PollSchema = new mongoose.Schema({
       title: String,
       votes: [
         {
-          type: mongoose.Types.ObjectId,
+          type: mongoose.Schema.Types.ObjectId,
           ref: "User",
         },
       ],
@@ -42,6 +42,6 @@ const PollSchema = new mongoose.Schema({
   },
 });
 
-const Poll = mongoose.models.Poll || mongoose.model("Poll", PollSchema);
+const Poll = mongoose.models.Poll || mongoose.model("Poll", pollSchema);
 
 export default Poll;

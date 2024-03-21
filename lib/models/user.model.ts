@@ -43,10 +43,6 @@ const userSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
-  points: {
-    type: Number,
-    default: 0,
-  },
   onboarded: {
     type: Boolean,
     default: false,
