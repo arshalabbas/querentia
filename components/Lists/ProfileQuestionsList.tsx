@@ -3,7 +3,6 @@ import QuestionCard from "../ui/QuestionCard";
 
 const ProfileQuestionsList = async ({ userId }: { userId: string }) => {
   const questions = await fetchUserQuestions(userId);
-  console.log(questions[0].name);
   return (
     <section className="flex flex-col gap-5 mt-5">
       {questions.map((question: any) => {

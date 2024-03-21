@@ -206,3 +206,26 @@ export async function fetchUserVoteOnFeed(
     );
   }
 }
+
+export async function fetchUserFeeds(userId: string) {
+  try {
+    connectToDB();
+
+    // Find all questions authored by the user with the given userId
+    const userInfo = await User.findOne({ id: userId }).populate({
+      path: "feeds",
+      model: Feed,
+      populate: [
+        {
+          path: "author",
+          model: User,
+          select: "username name avatar id",
+        },
+      ],
+    });
+    return userInfo.feeds;
+  } catch (error) {
+    console.error("Error fetching user threads:", error);
+    throw error;
+  }
+}

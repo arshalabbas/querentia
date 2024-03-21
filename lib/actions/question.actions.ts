@@ -338,7 +338,7 @@ export async function fetchUserQuestions(userId: string) {
         {
           path: "author",
           model: User,
-          select: "username name avatar",
+          select: "username name avatar id",
         },
       ],
     });

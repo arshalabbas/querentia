@@ -11,6 +11,7 @@ interface Props {
   author: {
     username: string;
     avatar: string;
+    id: string;
   };
   userId: string;
   feedId: string;
@@ -38,7 +39,7 @@ const FeedCard = ({
     await downVote(feedId, userId, pathname);
   };
   const deleteQuestionHandler = () => {};
-  const sameUser = false;
+  const sameUser = author.id === userId;
   return (
     <div className="card bg-base-200">
       <div className="flex p-4 justify-between">
