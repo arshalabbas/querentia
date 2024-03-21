@@ -56,6 +56,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
       };
     })
   );
+
+  answersWithAuthorData.sort((a: any, b: any) => b.voteLength - a.voteLength);
+
   return (
     <section>
       <QuestionActionCard

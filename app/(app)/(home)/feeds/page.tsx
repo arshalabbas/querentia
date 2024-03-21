@@ -8,7 +8,7 @@ import { headers } from "next/headers";
 const Page = async () => {
   const headersList = headers();
   const pathname = headersList.get("x-invoke-path") || "";
-  const result = await fetchFeeds(1, 30);
+  const result = await fetchFeeds(1, 1000);
   const user = await currentUser();
   if (!user) return null;
   const userInfo = await fetchUser(user.id);
