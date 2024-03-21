@@ -316,12 +316,35 @@ export async function fetchFilterecQuestions(searchQuery: string) {
         { title: { $regex: searchQuery, $options: "i" } },
         { description: { $regex: searchQuery, $options: "i" } },
       ],
-    });
+    }).populate({ path: "author", model: User, select: "username avatar" });
     // mongooseQuery.sort({ createdAt: "desc" });
 
     const data = mongooseQuery.exec();
     return data;
   } catch (error: any) {
     throw new Error(`Error searching: ${error.message}`);
+  }
+}
+
+export async function fetchUserQuestions(userId: string) {
+  try {
+    connectToDB();
+
+    // Find all questions authored by the user with the given userId
+    const userInfo = await User.findOne({ id: userId }).populate({
+      path: "questions",
+      model: Question,
+      populate: [
+        {
+          path: "author",
+          model: User,
+          select: "username name avatar",
+        },
+      ],
+    });
+    return userInfo.questions;
+  } catch (error) {
+    console.error("Error fetching user threads:", error);
+    throw error;
   }
 }
