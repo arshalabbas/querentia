@@ -14,7 +14,6 @@ interface Props {
   };
   userId: string;
   pollId: string;
-  voteLength: number;
   userVoted?: {
     upvote: boolean;
     downvote: boolean;

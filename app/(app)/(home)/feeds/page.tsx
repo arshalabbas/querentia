@@ -36,6 +36,7 @@ const Page = async () => {
       return {
         id: feed._id.toString(),
         title: feed.title,
+        description: feed.description,
         author: feedAuthorData,
         userId: userInfo.id,
         feedId: feed._id.toString(),

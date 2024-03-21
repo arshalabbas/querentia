@@ -2,6 +2,7 @@ export const multiAvatarUrl = (imageSeed: string | number) =>
   `https://api.multiavatar.com/${imageSeed}.png`;
 
 export function calculateProgress(poll: any) {
+  if (!poll) return;
   // Calculate the total number of votes across all options
   const totalVotes = poll.options.reduce(
     (acc: any, option: any) => acc + option.votes.length,
