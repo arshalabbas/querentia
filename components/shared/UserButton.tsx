@@ -36,6 +36,11 @@ const UserButton = async () => {
           tabIndex={0}
           className="menu menu-md max-sm:menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
         >
+          {userInfo.userType == "admin" && (
+            <li>
+              <Link href={"/admin"}>Admin Panel</Link>
+            </li>
+          )}
           <li>
             <Link href={`/profile/${userInfo.id}`} className="justify-between">
               Profile

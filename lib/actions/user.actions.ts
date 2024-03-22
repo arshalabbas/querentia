@@ -6,6 +6,8 @@ import connectToDB from "../mongoose";
 import { clerkClient } from "@clerk/nextjs";
 import Question from "../models/question.model";
 import { FilterQuery, SortOrder } from "mongoose";
+import Feed from "../models/feed.model";
+import Poll from "../models/poll.model";
 
 interface Params {
   userId: string;
@@ -67,7 +69,14 @@ export async function removeUser(userId: string) {
   try {
     connectToDB();
 
+    const existingUser = await User.findOne({ id: userId });
+
+    await Question.deleteMany({ author: { $in: [existingUser._id] } });
+    await Feed.deleteMany({ author: { $in: [existingUser._id] } });
+    await Poll.deleteMany({ author: { $in: [existingUser._id] } });
+
     await User.deleteOne({ id: userId });
+
     await clerkClient.users.deleteUser(userId);
   } catch (error: any) {
     throw new Error(`Error removing user: ${error.message}`);
@@ -101,7 +110,7 @@ export async function fetchUsers({
   userId,
   searchString = "",
   pageNumber = 1,
-  pageSize = 20,
+  pageSize = 1000,
   sortBy = "desc",
 }: {
   userId: string;
@@ -134,12 +143,9 @@ export async function fetchUsers({
       .skip(skipAmount)
       .limit(pageSize);
 
-    const totalUsersCount = await User.countDocuments(query);
     const users = await usersQuery.exec();
 
-    const isNext = totalUsersCount > skipAmount + users.length;
-
-    return { users, isNext };
+    return users;
   } catch (error: any) {
     throw new Error(`Error fetching users: ${error.message}`);
   }

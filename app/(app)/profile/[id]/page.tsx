@@ -4,7 +4,7 @@ import { fetchUser } from "@/lib/actions/user.actions";
 import UserTabs from "@/components/tabs/UserTabs";
 import ProfileQuestionsList from "@/components/Lists/ProfileQuestionsList";
 import ProfileFeedsList from "@/components/Lists/ProfileFeedsList";
-import ProfilePollsList from "@/components/Lists/ProfilePollsList";
+// import ProfilePollsList from "@/components/Lists/ProfilePollsList";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const user = await currentUser();
