@@ -44,7 +44,7 @@ export async function postQuestion({
   }
 }
 
-export async function fetchQuestions(pageNumber = 1, pageSize = 20) {
+export async function fetchQuestions(pageNumber = 1, pageSize = 1000) {
   const skipAmount = (pageNumber - 1) * pageSize;
   try {
     connectToDB();

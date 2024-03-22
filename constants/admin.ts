@@ -1,6 +1,7 @@
 import { IconType } from "react-icons";
-import { FaHome, FaUser } from "react-icons/fa";
+import { FaHome, FaQuestion, FaUser } from "react-icons/fa";
 import { FaMessage } from "react-icons/fa6";
+import { ImWarning } from "react-icons/im";
 
 interface adminPanelRouteType {
   route: string;
@@ -10,18 +11,23 @@ interface adminPanelRouteType {
 
 export const adminPanelRoutes: adminPanelRouteType[] = [
   {
-    route: "/admin/",
-    name: "Home",
-    Icon: FaHome,
-  },
-  {
     route: "/admin/users",
     name: "Users",
     Icon: FaUser,
   },
   {
-    route: "/admin/posts",
-    name: "Posts",
+    route: "/admin/questions",
+    name: "Questions",
+    Icon: FaQuestion,
+  },
+  {
+    route: "/admin/feeds",
+    name: "Feeds",
     Icon: FaMessage,
+  },
+  {
+    route: "/admin/reports",
+    name: "Reports",
+    Icon: ImWarning,
   },
 ];

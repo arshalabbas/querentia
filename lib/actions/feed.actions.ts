@@ -36,7 +36,7 @@ export async function PostFeed({ title, description, userId, path }: Params) {
   }
 }
 
-export async function fetchFeeds(pageNumber = 1, pageSize = 20) {
+export async function fetchFeeds(pageNumber = 1, pageSize = 2000) {
   const skipAmount = (pageNumber - 1) * pageSize;
 
   try {
@@ -227,5 +227,16 @@ export async function fetchUserFeeds(userId: string) {
   } catch (error) {
     console.error("Error fetching user threads:", error);
     throw error;
+  }
+}
+
+export async function deleteFeedById(feedId: string, pathname: string) {
+  try {
+    connectToDB();
+
+    await Feed.deleteOne({ _id: new mongoose.Types.ObjectId(feedId) });
+    revalidatePath(pathname);
+  } catch (error: any) {
+    throw new Error(`Error deleting the question: ${error.message}`);
   }
 }
